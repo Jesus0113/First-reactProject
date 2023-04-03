@@ -1,9 +1,15 @@
 import React from 'react'
+import { useState } from 'react'
 
 const Cart = () => {
+
+    const [carrito, setCarrito] = useState([]);
+
+
     return (
         <div className='cart'>
-            <table class="table border border-secondary p-2 border-opacity-75 mt-4 bg-info bg-gradient bg-opacity-50">
+            {carrito.length ? <p className='cart__length'>{carrito.length}</p> : null}
+            <table className="table border border-secondary p-2 border-opacity-75 mt-4 bg-info bg-gradient bg-opacity-50">
                 <thead>
                     <tr>
                         <th scope="col">ID</th>
@@ -30,7 +36,7 @@ const Cart = () => {
                     </tr>
                     <tr>
                         <th scope="row">3</th>
-                        <td colspan="2">Larry the Bird</td>
+                        <td>Larry the Bird</td>
                         <td>1</td>
                         <td> X </td>
                     </tr>

@@ -26,7 +26,7 @@ function Nabvar() {
             </NavLink>
 
             <Link to="Cart" >
-            <img className='carrito' src=".././public/cart.jpg" alt="" />
+            <img className='carrito' src=".././public/cart.jpg" alt="Imagen Carrito" />
             </Link>
         </nav>
     

@@ -1,7 +1,10 @@
 import React from 'react'
-import Card from '../card/Card'
+import Card from '../card/Card';
+import FormAdd from '../formAdd/FormAdd'
 
-function ListProducts({ product }) {
+
+function ListProducts({ product, setProducts }) {
+
     return (
         <div>
             <h1 className='fs-1 text-center'>Inventory</h1>
@@ -10,6 +13,8 @@ function ListProducts({ product }) {
                     <Card key={producto.id} producto={producto} />
                 ))}
             </div>
+
+            <FormAdd setProducts={setProducts} />
         </div>
     )
 }
