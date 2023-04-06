@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { addDoc, collection, getDocs } from 'firebase/firestore'
 import db from '../../../db/firebase-config'
+import { ProductsListContext } from '../../contexts/ProductsListContext';
 
 
 
-const FormAdd = ({ setProducts }) => {
+const FormAdd = () => {
 
     const [inputTitle, setInputTitle] = useState("");
     const [inputPrice, setInputPrice] = useState("");
     const [inputDescription, setInputDescription] = useState("");
     const [inputImage, setInputImage] = useState("");
+
+    const { setProducts } = useContext(ProductsListContext);
 
     const addItem = async (e) => {
         e.preventDefault();
@@ -23,6 +26,7 @@ const FormAdd = ({ setProducts }) => {
         const itemsColectionRef = collection(db, "items");
 
         await addDoc(itemsColectionRef, item);
+
         const itemsCollection = await getDocs(itemsColectionRef);
         setProducts(
             itemsCollection.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -44,7 +48,7 @@ const FormAdd = ({ setProducts }) => {
                 <input type="text" className='contact__input' placeholder='price' value={inputPrice} onChange={(e) => { setInputPrice(e.target.value) }} />
                 <input type="text" className='contact__input' placeholder='description' value={inputDescription} onChange={(e) => { setInputDescription(e.target.value) }} />
                 <input type="text" className='contact__input' placeholder='image(URL)' value={inputImage} onChange={(e) => { setInputImage(e.target.value) }} />
-                <button className='btn btn-primary mt-3 ' type='submit'>Agg</button>
+                {/* <button className='btn btn-primary mt-3 ' type='submit'>Agg</button> */}
             </form>
         </div>
     )
