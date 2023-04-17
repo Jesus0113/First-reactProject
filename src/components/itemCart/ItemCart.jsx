@@ -1,41 +1,52 @@
 
 import React, { useContext } from 'react'
 import { CartContext } from '../../contexts/CartContext'
-import { deleteDoc, doc } from 'firebase/firestore';
-import db from '../../../db/firebase-config';
-
 
 const ItemCart = () => {
 
-    const { carrito, getCart } = useContext(CartContext);
+    const { carrito, setCarrito, getCart } = useContext(CartContext);
 
 
-    const deleteitems = async (id) => {
+    const deleteitems = (id) => {
 
-        await deleteDoc(doc(db, "cart", id));
+        if (carrito.some(product => product.amount > 1)) {
 
-        getCart();
-        
+            const items = carrito.map(product => {
+                if (product.id === id) {
+                    product.amount--;
+                    return product;
+                } else {
+                    return product;
+                }
+            });
+
+            setCarrito([...items]);
+
+        } else {
+
+            const actCart = carrito.filter(product => product.id !== id);
+
+            setCarrito(actCart);
+
+        }
 
     };
 
-
     return (
         <>
-        {carrito.map( (product)=>(
-            <tr key={product.id} >
-            <th scope="row">{product.id}</th>
-            <td>{product.title}</td>
-            <td>{product.price}</td>
-            <td></td>
-            <td><button className='btn-Delete' onClick={()=>{deleteitems(product.id)}}>Delete</button></td>
-        </tr>
+            {carrito.map((product) => (
+                <tr key={product.id} >
+                    <td>{product.title}</td>
+                    <td>{product.price}</td>
+                    <td>{product.amount}</td>
+                    <td><button className='btn-Delete' onClick={() => { deleteitems(product.id) }}>Delete</button></td>
+                </tr>
 
-        ))}
+            ))
 
-</>
-            
+            }
 
+        </>
 
     )
 }

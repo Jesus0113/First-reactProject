@@ -2,9 +2,7 @@ import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { ProductsListContext } from '../../contexts/ProductsListContext';
 import { CartContext } from '../../contexts/CartContext';
-import { addDoc, collection, doc, getDoc, getDocs } from 'firebase/firestore';
-import db from '../../../db/firebase-config';
-import { useEffect } from 'react';
+
 
 
 const ProductItem = () => {
@@ -13,56 +11,38 @@ const ProductItem = () => {
 
     const { products } = useContext(ProductsListContext);
 
-    const { setCarrito } = useContext(CartContext);
-
-    const [prueba, setPrueba] = useState({});
+    const {carrito, setCarrito} = useContext(CartContext);
 
 
     const producto = products.find((producto) => producto.id == id);
 
-    
-    // const getItems = async (id) => {
 
-    //     const refDoc = doc(db, "cart", id);
-
-    //     const docSnap = await getDoc(refDoc);
-
-
-    //     console.log(docSnap);
-
-
-    //     if(docSnap.exists()){
-    //         console.log('existe');
-
-    //         setPrueba(docSnap.data());
-
-    //         console.log( "hola", + prueba.title);
-
-
-
-    //     }else{console.log('no existe');}
-    // };
-
-
-
-
-    const aggCart = async (producto) => {
+    const aggCart = (producto) => {
 
         const itemCart = {
             title: producto.title,
             price: producto.price,
+            amount: 1,
+            id: producto.id
         }
 
+        
+    if (carrito.some(product => product.id === producto.id)) {
 
-        const cartColectionRef = collection(db, "cart");
+        const items = carrito.map(product => {
+            if (product.id === producto.id) {
+                product.amount++;
+                return product;
+            } else {
+                return product;
+            }
+        });
 
-        await addDoc(cartColectionRef, itemCart);
-        const itemsCollection = await getDocs(cartColectionRef);
-        setCarrito(
-            itemsCollection.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        );
+        setCarrito([...items]);
 
-        // getItems(producto.id);
+    }else{
+        setCarrito([...carrito, itemCart]); 
+    }
 
 
     }
@@ -83,7 +63,7 @@ const ProductItem = () => {
                     <p className="card-text card-description-item">{producto.description}</p>
                     <p className="card-text">$Price: {producto.price}</p>
                     <p>rating: {producto.rating.rate}</p>
-                    <button href="..." className="btn btn-primary" onClick={() => aggCart(producto)}>Buy</button>
+                    <button href="..." className="btn btn-primary" onClick={() => aggCart(producto)}>Agg Cart</button>
                 </div>
             </div>
         </div >

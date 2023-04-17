@@ -32,21 +32,19 @@ function App() {
     );
   };
 
-  const cartColectionRef = collection(db, "cart");
 
-  const getCart = async () => {
-    const itemsCollection = await getDocs(cartColectionRef);
-    setCarrito(
-      itemsCollection.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-    )
+  const getCart = () => {
+    
+  setCarrito(JSON.parse(localStorage.getItem('carrito')) || []);
+
+
   }
 
-
-  
 
   useEffect(() => {
     getItems();
     getCart();
+    
   }, []);
 
   return (
